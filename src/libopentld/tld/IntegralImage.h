@@ -35,13 +35,13 @@ namespace tld
 template <class T>
 class IntegralImage
 {
-public:
-    T *data;  /* Array containg the entries for the integral image in row-first manner. Of size width*height. Allocated by tldAllocIntImg */
     /* width, height: Dimensions of integral image.*/
     int width;
     int height;
+public:
+    T *data;  /* Array containg the entries for the integral image in row-first manner. Of size width*height. Allocated by tldAllocIntImg */
 
-    IntegralImage(cv::Size size)
+    IntegralImage(cv::Size size): width(size.width), height(size.height)
     {
         data = new T[size.width * size.height];
     }
