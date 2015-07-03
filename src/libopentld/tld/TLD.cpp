@@ -26,6 +26,7 @@
 #include "TLD.h"
 
 #include <iostream>
+#include <opencv2/imgproc.hpp>
 
 #include "NNClassifier.h"
 #include "TLDUtil.h"
@@ -149,7 +150,7 @@ void TLD::processImage(const Mat &img)
 {
     storeCurrentData();
     Mat grey_frame;
-    cvtColor(img, grey_frame, CV_BGR2GRAY);
+    cvtColor(img, grey_frame, COLOR_BGR2GRAY);
     currImg = grey_frame; // Store new image , right after storeCurrentData();
 
     if(trackerEnabled)

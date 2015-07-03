@@ -25,6 +25,8 @@
 
 #include "Main.h"
 
+#include <opencv2/imgproc.hpp>
+
 #include "Config.h"
 #include "ImAcq.h"
 #include "Gui.h"
@@ -39,7 +41,7 @@ void Main::doWork()
 	Trajectory trajectory;
     IplImage *img = imAcqGetImg(imAcq);
     Mat grey(img->height, img->width, CV_8UC1);
-    cvtColor(cvarrToMat(img), grey, CV_BGR2GRAY);
+    cvtColor(cvarrToMat(img), grey, COLOR_BGR2GRAY);
 
     tld->detectorCascade->imgWidth = grey.cols;
     tld->detectorCascade->imgHeight = grey.rows;
@@ -117,7 +119,7 @@ void Main::doWork()
                 break;
             }
 
-            cvtColor(cvarrToMat(img), grey, CV_BGR2GRAY);
+            cvtColor(cvarrToMat(img), grey, COLOR_BGR2GRAY);
         }
 
         if(!skipProcessingOnce)

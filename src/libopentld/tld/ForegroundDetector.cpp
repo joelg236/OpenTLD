@@ -24,6 +24,7 @@
  */
 
 #include "ForegroundDetector.h"
+#include <opencv2/imgproc.hpp>
 
 using namespace cv;
 
@@ -58,7 +59,7 @@ void ForegroundDetector::nextIteration(const Mat &img)
 	std::vector<Vec4i> hierarchy;
 
     absdiff(bgImg, img, absImg);
-    threshold(absImg, threshImg, fgThreshold, 255, CV_THRESH_BINARY);
+    threshold(absImg, threshImg, fgThreshold, 255, THRESH_BINARY);
 
 	findContours(absImg, contours, hierarchy,
 					CV_RETR_TREE, CV_CHAIN_APPROX_SIMPLE, Point(0, 0));
