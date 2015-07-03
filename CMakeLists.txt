@@ -75,8 +75,6 @@ endif(NOT MSVC)
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)
 set(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/lib)
 
-#-------------------------------------------------------------------------------
-
 if(NOT USE_SYSTEM_LIBS)
     add_subdirectory(src/3rdparty/libconfig)
 endif(NOT USE_SYSTEM_LIBS)

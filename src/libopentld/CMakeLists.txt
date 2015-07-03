@@ -1,7 +1,6 @@
 include_directories(imacq
     mftracker
     tld
-    ../3rdparty/cvblobs
     ${OpenCV_INCLUDE_DIRS})
 link_directories(${OpenCV_LIB_DIR})
 
@@ -41,8 +40,7 @@ add_library(libopentld
     tld/TLDUtil.h
     tld/VarianceFilter.h)
 
-add_subdirectory(../3rdparty/cvblobs cvblobs_build)
-target_link_libraries(libopentld ${OpenCV_LIBS} cvblobs)
+target_link_libraries(libopentld ${OpenCV_LIBS})
 
 set_target_properties(libopentld PROPERTIES OUTPUT_NAME opentld)
 
