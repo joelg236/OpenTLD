@@ -27,6 +27,7 @@
 #include "DetectorCascade.h"
 
 #include <algorithm>
+#include <assert.h>
 
 #include "TLDUtil.h"
 

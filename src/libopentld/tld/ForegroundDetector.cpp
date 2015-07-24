@@ -24,6 +24,7 @@
  */
 
 #include "ForegroundDetector.h"
+#include <opencv2/core.hpp>
 #include <opencv2/imgproc.hpp>
 
 using namespace cv;
@@ -62,7 +63,7 @@ void ForegroundDetector::nextIteration(const Mat &img)
     threshold(absImg, threshImg, fgThreshold, 255, THRESH_BINARY);
 
 	findContours(absImg, contours, hierarchy,
-					CV_RETR_TREE, CV_CHAIN_APPROX_SIMPLE, Point(0, 0));
+					RETR_TREE, CHAIN_APPROX_SIMPLE, Point(0, 0));
 
     for(size_t i = 0; i < contours.size(); i++)
 		if(contourArea(contours[i]) > minArea)
