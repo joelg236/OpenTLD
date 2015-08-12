@@ -10,6 +10,9 @@ include_directories(
     src/tld
     ${OpenCV_INCLUDE_DIRS})
 
+set(LIBOPENTLD_INCLUDE "${CMAKE_CURRENT_SOURCE_DIR}/src" PARENT_SCOPE)
+
+
 add_library(libopentld
     src/imacq/ImAcq.cpp
     src/mftracker/BB.cpp
