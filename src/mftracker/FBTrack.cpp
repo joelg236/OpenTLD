@@ -42,9 +42,8 @@
  *                   Format x1,y1,x2,y2
  * @param scaleshift returns relative scale change of bb
  */
-int fbtrack(IplImage *imgI, IplImage *imgJ, float *bb, float *bbnew,
-            float *scaleshift)
-{
+int fbtrack(IplImage* imgI, IplImage* imgJ, float* bb, float* bbnew,
+            float* scaleshift) {
     char level = 5;
     const int numM = 10;
     const int numN = 10;
@@ -58,10 +57,10 @@ int fbtrack(IplImage *imgI, IplImage *imgJ, float *bb, float *bbnew,
     float pt[sizePointsArray];
     float ptTracked[sizePointsArray];
     int nlkPoints;
-    CvPoint2D32f *startPoints;
-    CvPoint2D32f *targetPoints;
-    float *fbLkCleaned;
-    float *nccLkCleaned;
+    CvPoint2D32f* startPoints;
+    CvPoint2D32f* targetPoints;
+    float* fbLkCleaned;
+    float* nccLkCleaned;
     int i, M;
     int nRealPoints;
     float medFb;
@@ -77,28 +76,23 @@ int fbtrack(IplImage *imgI, IplImage *imgJ, float *bb, float *bbnew,
     //  char* status = *statusP;
     nlkPoints = 0;
 
-    for(i = 0; i < nPoints; i++)
-    {
+    for (i = 0; i < nPoints; i++) {
         nlkPoints += status[i];
     }
 
-    startPoints = (CvPoint2D32f *) malloc(nlkPoints * sizeof(CvPoint2D32f));
-    targetPoints = (CvPoint2D32f *) malloc(nlkPoints * sizeof(CvPoint2D32f));
-    fbLkCleaned = (float *) malloc(nlkPoints * sizeof(float));
-    nccLkCleaned = (float *) malloc(nlkPoints * sizeof(float));
+    startPoints = (CvPoint2D32f*) malloc(nlkPoints * sizeof(CvPoint2D32f));
+    targetPoints = (CvPoint2D32f*) malloc(nlkPoints * sizeof(CvPoint2D32f));
+    fbLkCleaned = (float*) malloc(nlkPoints * sizeof(float));
+    nccLkCleaned = (float*) malloc(nlkPoints * sizeof(float));
 
     M = 2;
     nRealPoints = 0;
 
-    for(i = 0; i < nPoints; i++)
-    {
+    for (i = 0; i < nPoints; i++) {
         //TODO:handle Missing Points
         //or status[i]==0
-        if(ptTracked[M * i] == -1)
-        {
-        }
-        else
-        {
+        if (ptTracked[M * i] == -1) {
+        } else {
             startPoints[nRealPoints].x = pt[2 * i];
             startPoints[nRealPoints].y = pt[2 * i + 1];
             targetPoints[nRealPoints].x = ptTracked[2 * i];
@@ -116,10 +110,8 @@ int fbtrack(IplImage *imgI, IplImage *imgJ, float *bb, float *bbnew,
      printf("Number of points after lk: %d\n", nlkPoints);*/
     nAfterFbUsage = 0;
 
-    for(i = 0; i < nlkPoints; i++)
-    {
-        if((fbLkCleaned[i] <= medFb) & (nccLkCleaned[i] >= medNcc))
-        {
+    for (i = 0; i < nlkPoints; i++) {
+        if ((fbLkCleaned[i] <= medFb) & (nccLkCleaned[i] >= medNcc)) {
             startPoints[nAfterFbUsage] = startPoints[i];
             targetPoints[nAfterFbUsage] = targetPoints[i];
             nAfterFbUsage++;
@@ -144,7 +136,7 @@ int fbtrack(IplImage *imgI, IplImage *imgJ, float *bb, float *bbnew,
     free(fbLkCleaned);
     free(nccLkCleaned);
 
-    if(medFb > 10) return 0;
-    else return 1;
+    if (medFb > 10) { return 0; }
+    else { return 1; }
 
 }

@@ -33,23 +33,21 @@
 
 #include "DetectionResult.h"
 
-namespace tld
-{
+namespace tld {
 
-class ForegroundDetector
-{
-public:
-    int fgThreshold;
-    double minArea;
-    cv::Mat bgImg;
-    DetectionResult *detectionResult;
+    class ForegroundDetector {
+    public:
+        int fgThreshold;
+        double minArea;
+        cv::Mat bgImg;
+        DetectionResult* detectionResult;
 
-    ForegroundDetector();
-    virtual ~ForegroundDetector();
-    void release();
-    void nextIteration(const cv::Mat &img);
-    bool isActive();
-};
+        ForegroundDetector();
+        virtual ~ForegroundDetector();
+        void release();
+        void nextIteration(const cv::Mat& img);
+        bool isActive();
+    };
 
 } /* namespace tld */
 #endif /* FOREGROUNDDETECTOR_H_ */

@@ -42,8 +42,7 @@
  *  Cambridge University Press, 1992, Section 8.5, ISBN 0-521-43108-5
  *  This code by Nicolas Devillard - 1998. Public domain.
  */
-float getMedianUnmanaged(float arr[], int n)
-{
+float getMedianUnmanaged(float arr[], int n) {
     int low, high;
     int median;
     int middle, ll, hh;
@@ -52,16 +51,14 @@ float getMedianUnmanaged(float arr[], int n)
     high = n - 1;
     median = (low + high) / 2;
 
-    for(;;)
-    {
-        if(high <= low)  /* One element only */
-            return arr[median];
+    for (;;) {
+        if (high <= low) /* One element only */
+        { return arr[median]; }
 
-        if(high == low + 1)
-        {
+        if (high == low + 1) {
             /* Two elements only */
-            if(arr[low] > arr[high])
-                ELEM_SWAP(arr[low], arr[high]);
+            if (arr[low] > arr[high])
+            { ELEM_SWAP(arr[low], arr[high]); }
 
             return arr[median];
         }
@@ -69,14 +66,14 @@ float getMedianUnmanaged(float arr[], int n)
         /* Find median of low, middle and high items; swap into position low */
         middle = (low + high) / 2;
 
-        if(arr[middle] > arr[high])
-            ELEM_SWAP(arr[middle], arr[high]);
+        if (arr[middle] > arr[high])
+        { ELEM_SWAP(arr[middle], arr[high]); }
 
-        if(arr[low] > arr[high])
-            ELEM_SWAP(arr[low], arr[high]);
+        if (arr[low] > arr[high])
+        { ELEM_SWAP(arr[low], arr[high]); }
 
-        if(arr[middle] > arr[low])
-            ELEM_SWAP(arr[middle], arr[low]);
+        if (arr[middle] > arr[low])
+        { ELEM_SWAP(arr[middle], arr[low]); }
 
         /* Swap low item (now in position middle) into position (low+1) */
         ELEM_SWAP(arr[middle], arr[low + 1]);
@@ -85,20 +82,19 @@ float getMedianUnmanaged(float arr[], int n)
         ll = low + 1;
         hh = high;
 
-        for(;;)
-        {
+        for (;;) {
             do
-                ll++;
+            { ll++; }
 
-            while(arr[low] > arr[ll]);
+            while (arr[low] > arr[ll]);
 
             do
-                hh--;
+            { hh--; }
 
-            while(arr[hh] > arr[low]);
+            while (arr[hh] > arr[low]);
 
-            if(hh < ll)
-                break;
+            if (hh < ll)
+            { break; }
 
             ELEM_SWAP(arr[ll], arr[hh]);
         }
@@ -107,11 +103,11 @@ float getMedianUnmanaged(float arr[], int n)
         ELEM_SWAP(arr[low], arr[hh]);
 
         /* Re-set active partition */
-        if(hh <= median)
-            low = ll;
+        if (hh <= median)
+        { low = ll; }
 
-        if(hh >= median)
-            high = hh - 1;
+        if (hh >= median)
+        { high = hh - 1; }
     }
 }
 
@@ -120,9 +116,8 @@ float getMedianUnmanaged(float arr[], int n)
  * @param arr the array
  * @pram n length of array
  */
-float getMedian(float arr[], int n)
-{
-    float *temP = (float *) malloc(sizeof(float) * n);
+float getMedian(float arr[], int n) {
+    float* temP = (float*) malloc(sizeof(float) * n);
     //  int i;
     //  for (i = 0; i < n; i++)
     //  {

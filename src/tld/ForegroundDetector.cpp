@@ -29,61 +29,53 @@
 
 using namespace cv;
 
-namespace tld
-{
+namespace tld {
 
-ForegroundDetector::ForegroundDetector()
-{
-    fgThreshold = 16;
-    minArea = 0;
-}
-
-ForegroundDetector::~ForegroundDetector()
-{
-}
-
-void ForegroundDetector::release()
-{
-}
-
-void ForegroundDetector::nextIteration(const Mat &img)
-{
-    if(bgImg.empty())
-    {
-        return;
+    ForegroundDetector::ForegroundDetector() {
+        fgThreshold = 16;
+        minArea = 0;
     }
 
-    Mat absImg = Mat(img.cols, img.rows, img.type());
-    Mat threshImg = Mat(img.cols, img.rows, img.type());
-	std::vector<std::vector<Point> > contours;
-	std::vector<std::vector<Point> > selected_contours;
-	std::vector<Vec4i> hierarchy;
-
-    absdiff(bgImg, img, absImg);
-    threshold(absImg, threshImg, fgThreshold, 255, THRESH_BINARY);
-
-	findContours(absImg, contours, hierarchy,
-					RETR_TREE, CHAIN_APPROX_SIMPLE, Point(0, 0));
-
-    for(size_t i = 0; i < contours.size(); i++)
-		if(contourArea(contours[i]) > minArea)
-			selected_contours.push_back(contours[i]);
-
-    std::vector<Rect>* fgList = detectionResult->fgList;
-    fgList->clear();
-
-    for(size_t i = 0; i < selected_contours.size(); i++)
-    {
-        std::vector<Point> contour = selected_contours[i];
-        Rect rect = boundingRect(contour);
-        fgList->push_back(rect);
+    ForegroundDetector::~ForegroundDetector() {
     }
 
-}
+    void ForegroundDetector::release() {
+    }
 
-bool ForegroundDetector::isActive()
-{
-    return !bgImg.empty();
-}
+    void ForegroundDetector::nextIteration(const Mat& img) {
+        if (bgImg.empty()) {
+            return;
+        }
+
+        Mat absImg = Mat(img.cols, img.rows, img.type());
+        Mat threshImg = Mat(img.cols, img.rows, img.type());
+        std::vector<std::vector<Point> > contours;
+        std::vector<std::vector<Point> > selected_contours;
+        std::vector<Vec4i> hierarchy;
+
+        absdiff(bgImg, img, absImg);
+        threshold(absImg, threshImg, fgThreshold, 255, THRESH_BINARY);
+
+        findContours(absImg, contours, hierarchy,
+                     RETR_TREE, CHAIN_APPROX_SIMPLE, Point(0, 0));
+
+        for (size_t i = 0; i < contours.size(); i++)
+            if (contourArea(contours[i]) > minArea)
+            { selected_contours.push_back(contours[i]); }
+
+        std::vector<Rect>* fgList = detectionResult->fgList;
+        fgList->clear();
+
+        for (size_t i = 0; i < selected_contours.size(); i++) {
+            std::vector<Point> contour = selected_contours[i];
+            Rect rect = boundingRect(contour);
+            fgList->push_back(rect);
+        }
+
+    }
+
+    bool ForegroundDetector::isActive() {
+        return !bgImg.empty();
+    }
 
 } /* namespace tld */
