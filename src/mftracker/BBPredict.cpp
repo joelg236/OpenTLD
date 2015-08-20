@@ -35,16 +35,14 @@
  * Returns width of Boundingbox.
  * @param bb Boundingbox
  */
-float getBbWidth(float *bb)
-{
+float getBbWidth(float* bb) {
     return abs(bb[2] - bb[0] + 1);
 }
 /**
  * Returns hight of Boundingbox.
  * @param bb Boundingbox
  */
-float getBbHeight(float *bb)
-{
+float getBbHeight(float* bb) {
     return abs(bb[3] - bb[1] + 1);
 }
 /**
@@ -52,22 +50,20 @@ float getBbHeight(float *bb)
  * Calculation based on all relative distance changes of all points
  * to every point. Then the Median of the relative Values is used.
  */
-int predictbb(float *bb0, CvPoint2D32f *pt0, CvPoint2D32f *pt1, int nPts,
-              float *bb1, float *shift)
-{
-    float *ofx = (float *) malloc(sizeof(float) * nPts);
-    float *ofy = (float *) malloc(sizeof(float) * nPts);
+int predictbb(float* bb0, CvPoint2D32f* pt0, CvPoint2D32f* pt1, int nPts,
+              float* bb1, float* shift) {
+    float* ofx = (float*) malloc(sizeof(float) * nPts);
+    float* ofy = (float*) malloc(sizeof(float) * nPts);
     int i;
     int j;
     int d = 0;
     float dx, dy;
     int lenPdist;
-    float *dist0;
-    float *dist1;
+    float* dist0;
+    float* dist1;
     float s0, s1;
 
-    for(i = 0; i < nPts; i++)
-    {
+    for (i = 0; i < nPts; i++) {
         ofx[i] = pt1[i].x - pt0[i].x;
         ofy[i] = pt1[i].y - pt0[i].y;
     }
@@ -80,17 +76,15 @@ int predictbb(float *bb0, CvPoint2D32f *pt0, CvPoint2D32f *pt1, int nPts,
     ofy = 0;
     //m(m-1)/2
     lenPdist = nPts * (nPts - 1) / 2;
-    dist0 = (float *) malloc(sizeof(float) * lenPdist);
-    dist1 = (float *) malloc(sizeof(float) * lenPdist);
+    dist0 = (float*) malloc(sizeof(float) * lenPdist);
+    dist1 = (float*) malloc(sizeof(float) * lenPdist);
 
-    for(i = 0; i < nPts; i++)
-    {
-        for(j = i + 1; j < nPts; j++, d++)
-        {
+    for (i = 0; i < nPts; i++) {
+        for (j = i + 1; j < nPts; j++, d++) {
             dist0[d]
-            = sqrt(pow(pt0[i].x - pt0[j].x, 2) + pow(pt0[i].y - pt0[j].y, 2));
+                = sqrt(pow(pt0[i].x - pt0[j].x, 2) + pow(pt0[i].y - pt0[j].y, 2));
             dist1[d]
-            = sqrt(pow(pt1[i].x - pt1[j].x, 2) + pow(pt1[i].y - pt1[j].y, 2));
+                = sqrt(pow(pt1[i].x - pt1[j].x, 2) + pow(pt1[i].y - pt1[j].y, 2));
             dist0[d] = dist1[d] / dist0[d];
         }
     }

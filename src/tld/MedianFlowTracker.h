@@ -29,19 +29,17 @@
 
 #include <opencv2/core.hpp>
 
-namespace tld
-{
+namespace tld {
 
-class MedianFlowTracker
-{
-public:
-    cv::Rect *trackerBB;
+    class MedianFlowTracker {
+    public:
+        cv::Rect* trackerBB;
 
-    MedianFlowTracker();
-    virtual ~MedianFlowTracker();
-    void cleanPreviousData();
-    void track(const cv::Mat &prevImg, const cv::Mat &currImg, cv::Rect *prevBB);
-};
+        MedianFlowTracker();
+        virtual ~MedianFlowTracker();
+        void cleanPreviousData();
+        void track(const cv::Mat& prevImg, const cv::Mat& currImg, cv::Rect* prevBB);
+    };
 
 } /* namespace tld */
 #endif /* MEDIANFLOWTRACKER_H_ */

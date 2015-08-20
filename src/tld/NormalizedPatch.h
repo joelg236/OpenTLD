@@ -28,15 +28,13 @@
 
 #define TLD_PATCH_SIZE 15
 
-namespace tld
-{
+namespace tld {
 
-class NormalizedPatch
-{
-public:
-    float values[TLD_PATCH_SIZE *TLD_PATCH_SIZE];
-    bool positive;
-};
+    class NormalizedPatch {
+    public:
+        float values[TLD_PATCH_SIZE* TLD_PATCH_SIZE];
+        bool positive;
+    };
 
 } /* namespace tld */
 #endif /* NORMALIZEDPATCH_H_ */

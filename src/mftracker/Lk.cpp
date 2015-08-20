@@ -39,8 +39,8 @@ const double N_A_N = -1.0;
  * Size of the search window of each pyramid level in cvCalcOpticalFlowPyrLK.
  */
 int win_size_lk = 4;
-CvPoint2D32f *points[3] = { 0, 0, 0 };
-static IplImage **PYR = 0;
+CvPoint2D32f* points[3] = { 0, 0, 0 };
+static IplImage** PYR = 0;
 
 /**
  * Calculates euclidean distance between the point pairs.
@@ -50,13 +50,11 @@ static IplImage **PYR = 0;
  *                  Must have the length of nPts.
  * @param nPts      Number of pairs.
  */
-void euclideanDistance(CvPoint2D32f *point1, CvPoint2D32f *point2,
-                       float *match, int nPts)
-{
+void euclideanDistance(CvPoint2D32f* point1, CvPoint2D32f* point2,
+                       float* match, int nPts) {
     int i;
 
-    for(i = 0; i < nPts; i++)
-    {
+    for (i = 0; i < nPts; i++) {
         match[i] = sqrt((point1[i].x - point2[i].x) * (point1[i].x - point2[i].x)
                         + (point1[i].y - point2[i].y) * (point1[i].y - point2[i].y));
     }
@@ -79,27 +77,22 @@ void euclideanDistance(CvPoint2D32f *point1, CvPoint2D32f *point2,
  * @param method    Specifies the way how image regions are compared.
  *                  see cvMatchTemplate
  */
-void normCrossCorrelation(IplImage *imgI, IplImage *imgJ,
-                          CvPoint2D32f *points0, CvPoint2D32f *points1, int nPts, char *status,
-                          float *match, int winsize, int method)
-{
-    IplImage *rec0 = cvCreateImage(cvSize(winsize, winsize), 8, 1);
-    IplImage *rec1 = cvCreateImage(cvSize(winsize, winsize), 8, 1);
-    IplImage *res = cvCreateImage(cvSize(1, 1), IPL_DEPTH_32F, 1);
+void normCrossCorrelation(IplImage* imgI, IplImage* imgJ,
+                          CvPoint2D32f* points0, CvPoint2D32f* points1, int nPts, char* status,
+                          float* match, int winsize, int method) {
+    IplImage* rec0 = cvCreateImage(cvSize(winsize, winsize), 8, 1);
+    IplImage* rec1 = cvCreateImage(cvSize(winsize, winsize), 8, 1);
+    IplImage* res = cvCreateImage(cvSize(1, 1), IPL_DEPTH_32F, 1);
 
     int i;
 
-    for(i = 0; i < nPts; i++)
-    {
-        if(status[i] == 1)
-        {
+    for (i = 0; i < nPts; i++) {
+        if (status[i] == 1) {
             cvGetRectSubPix(imgI, rec0, points0[i]);
             cvGetRectSubPix(imgJ, rec1, points1[i]);
             cvMatchTemplate(rec0, rec1, res, method);
-            match[i] = ((float *)(res->imageData))[0];
-        }
-        else
-        {
+            match[i] = ((float*)(res->imageData))[0];
+        } else {
             match[i] = 0.0;
         }
     }
@@ -113,14 +106,11 @@ void normCrossCorrelation(IplImage *imgI, IplImage *imgJ,
  * Needed before start of trackLK and at the end of the program for cleanup.
  * Handles PYR(Pyramid cache) variable.
  */
-void initImgs()
-{
-    if(PYR != 0)
-    {
+void initImgs() {
+    if (PYR != 0) {
         int i;
 
-        for(i = 0; i < MAX_IMG; i++)
-        {
+        for (i = 0; i < MAX_IMG; i++) {
             cvReleaseImage(&(PYR[i]));
             PYR[i] = 0;
         }
@@ -130,7 +120,7 @@ void initImgs()
         //printf("LK: deallocated\n");
     }
 
-    PYR = (IplImage **) calloc(MAX_IMG, sizeof(IplImage *));
+    PYR = (IplImage**) calloc(MAX_IMG, sizeof(IplImage*));
     //printf("LK: initialized\n");
 }
 
@@ -159,9 +149,8 @@ void initImgs()
  * lk(2,imgI,imgJ,ptsI,ptsJ,Level) (Level is optional)
  */
 
-int trackLK(IplImage *imgI, IplImage *imgJ, float ptsI[], int nPtsI,
-            float ptsJ[], int nPtsJ, int level, float *fb, float *ncc, char *status)
-{
+int trackLK(IplImage* imgI, IplImage* imgJ, float ptsI[], int nPtsI,
+            float ptsJ[], int nPtsJ, int level, float* fb, float* ncc, char* status) {
     //TODO: watch NaN cases
     //double nan = std::numeric_limits<double>::quiet_NaN();
     //double inf = std::numeric_limits<double>::infinity();
@@ -172,8 +161,7 @@ int trackLK(IplImage *imgI, IplImage *imgJ, float ptsI[], int nPtsI,
     int i;
 
     //if unused std 5
-    if(level == -1)
-    {
+    if (level == -1) {
         level = 5;
     }
 
@@ -187,20 +175,18 @@ int trackLK(IplImage *imgI, IplImage *imgJ, float ptsI[], int nPtsI,
     PYR[J] = cvCreateImage(pyr_sz, IPL_DEPTH_32F, 1);
 
     // Points
-    if(nPtsJ != nPtsI)
-    {
+    if (nPtsJ != nPtsI) {
         printf("Inconsistent input!\n");
         return 0;
     }
 
-    points[0] = (CvPoint2D32f *) malloc(nPtsI * sizeof(CvPoint2D32f)); // template
-    points[1] = (CvPoint2D32f *) malloc(nPtsI * sizeof(CvPoint2D32f)); // target
-    points[2] = (CvPoint2D32f *) malloc(nPtsI * sizeof(CvPoint2D32f)); // forward-backward
+    points[0] = (CvPoint2D32f*) malloc(nPtsI * sizeof(CvPoint2D32f));  // template
+    points[1] = (CvPoint2D32f*) malloc(nPtsI * sizeof(CvPoint2D32f));  // target
+    points[2] = (CvPoint2D32f*) malloc(nPtsI * sizeof(CvPoint2D32f));  // forward-backward
     //TODO:Free
-    char *statusBacktrack = (char *) malloc(nPtsI);
+    char* statusBacktrack = (char*) malloc(nPtsI);
 
-    for(i = 0; i < nPtsI; i++)
-    {
+    for (i = 0; i < nPtsI; i++) {
         points[0][i].x = ptsI[2 * i];
         points[0][i].y = ptsI[2 * i + 1];
         points[1][i].x = ptsJ[2 * i];
@@ -221,14 +207,10 @@ int trackLK(IplImage *imgI, IplImage *imgJ, float ptsI[], int nPtsI,
                                CV_TERMCRIT_ITER | CV_TERMCRIT_EPS, 20, 0.03),
                            CV_LKFLOW_INITIAL_GUESSES | CV_LKFLOW_PYR_A_READY | CV_LKFLOW_PYR_B_READY);
 
-    for(i = 0; i < nPtsI; i++)
-    {
-        if(status[i] && statusBacktrack[i])
-        {
+    for (i = 0; i < nPtsI; i++) {
+        if (status[i] && statusBacktrack[i]) {
             status[i] = 1;
-        }
-        else
-        {
+        } else {
             status[i] = 0;
         }
     }
@@ -237,15 +219,11 @@ int trackLK(IplImage *imgI, IplImage *imgJ, float ptsI[], int nPtsI,
                          winsize_ncc, CV_TM_CCOEFF_NORMED);
     euclideanDistance(points[0], points[2], fb, nPtsI);
 
-    for(i = 0; i < nPtsI; i++)
-    {
-        if(status[i] == 1)
-        {
+    for (i = 0; i < nPtsI; i++) {
+        if (status[i] == 1) {
             ptsJ[2 * i] = points[1][i].x;
             ptsJ[2 * i + 1] = points[1][i].y;
-        }
-        else //flow for the corresponding feature hasn't been found
-        {
+        } else { //flow for the corresponding feature hasn't been found
             //Todo: shell realy write N_A_N in it?
             ptsJ[2 * i] = N_A_N;
             ptsJ[2 * i + 1] = N_A_N;
@@ -254,8 +232,7 @@ int trackLK(IplImage *imgI, IplImage *imgJ, float ptsI[], int nPtsI,
         }
     }
 
-    for(i = 0; i < 3; i++)
-    {
+    for (i = 0; i < 3; i++) {
         free(points[i]);
         points[i] = 0;
     }
