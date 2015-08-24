@@ -61,6 +61,7 @@ namespace tld {
         virtual ~TLD();
         void release();
         void selectObject(const cv::Mat& img, cv::Rect* bb);
+        void reselectObject(const cv::Mat &img, cv::Rect *bb);
         void processImage(const cv::Mat& img);
         void writeToFile(const char* path);
         void readFromFile(const char* path);

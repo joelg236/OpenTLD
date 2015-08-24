@@ -133,6 +133,26 @@ namespace tld {
         initialLearning();
 
     }
+    void TLD::reselectObject(const Mat &img, Rect *bb)
+    {
+      //Delete old object
+      //detectorCascade->release();
+
+      detectorCascade->objWidth = bb->width;
+      detectorCascade->objHeight = bb->height;
+
+      //Init detector cascade
+      //detectorCascade->init();
+
+      currImg = img;
+      currBB = tldCopyRect(bb);
+      currConf = 1;
+      valid = true;
+
+      //initialLearning();
+
+    }
+
 
     void TLD::processImage(const Mat& grey_frame) {
         storeCurrentData();
